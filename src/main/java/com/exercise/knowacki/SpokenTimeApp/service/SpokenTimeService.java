@@ -1,13 +1,18 @@
 package com.exercise.knowacki.SpokenTimeApp.service;
 
 import com.exercise.knowacki.SpokenTimeApp.util.TimeWordUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 @Service
+@RequiredArgsConstructor
 public class SpokenTimeService {
+
+    private final PastConverter pastConverter;
+    private final ToConverter toConverter;
 
     private static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
@@ -30,11 +35,15 @@ public class SpokenTimeService {
             } else if (hour == 12) {
                 return "noon";
             } else {
-                return TimeWordUtils.getHourWord(hour) + " o'clock";
+                return TimeWordUtils.getWordForHour(hour) + " o'clock";
             }
+        } else if (minute == 30) {
+            return "half past " + TimeWordUtils.getWordForHour(hour);
+        } else if (minute <= 34) {
+            return pastConverter.convert(hour, minute);
+        } else {
+            return toConverter.convert(hour, minute);
         }
-        //TODO: cover minutes scenario
-        return "To be done";
     }
 
 
