@@ -32,10 +32,8 @@ public class TimeWordUtils {
 
     public static String getWordForHour(int hour) {
         int adjustedHour = hour % 12;
-        if (adjustedHour == 0) {
-            adjustedHour = 12;
-        }
-        return NUMBER_TO_WORD.get(adjustedHour);
+
+        return NUMBER_TO_WORD.getOrDefault(adjustedHour, "");
     }
 
     public static String getWordForMinute(int minute) {
@@ -44,8 +42,8 @@ public class TimeWordUtils {
         }
         int tens = minute / 10 * 10;
         int ones = minute % 10;
-        String tensWord = NUMBER_TO_WORD.get(tens);
-        String onesWord = (ones > 0) ? " " + NUMBER_TO_WORD.get(ones) : "";
+        String tensWord = NUMBER_TO_WORD.getOrDefault(tens, "");
+        String onesWord = (ones > 0 && !tensWord.isBlank()) ? " " + NUMBER_TO_WORD.get(ones) : "";
 
         return tensWord + onesWord;
     }
