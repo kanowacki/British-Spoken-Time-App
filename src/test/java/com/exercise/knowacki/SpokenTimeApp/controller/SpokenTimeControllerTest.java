@@ -33,7 +33,7 @@ class SpokenTimeControllerTest {
 
         mockMvc.perform(get("/spoken-time/{time}", testInput))
                 .andExpect(status().isOk())
-                .andExpect(content().string(expectedOutput));
+                .andExpect(jsonPath("$.spokenForm").value(expectedOutput));
     }
 
     @SneakyThrows

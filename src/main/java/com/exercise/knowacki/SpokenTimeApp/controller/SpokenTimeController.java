@@ -1,5 +1,6 @@
 package com.exercise.knowacki.SpokenTimeApp.controller;
 
+import com.exercise.knowacki.SpokenTimeApp.model.SpokenTimeResponse;
 import com.exercise.knowacki.SpokenTimeApp.service.SpokenTimeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +17,7 @@ public class SpokenTimeController {
     private final SpokenTimeService service;
 
     @GetMapping("/{time}")
-    public String getSpokenTime(@PathVariable String time) {
-        return service.convertToSpokenForm(time);
+    public SpokenTimeResponse getSpokenTime(@PathVariable String time) {
+        return new SpokenTimeResponse(service.convertToSpokenForm(time));
     }
 }

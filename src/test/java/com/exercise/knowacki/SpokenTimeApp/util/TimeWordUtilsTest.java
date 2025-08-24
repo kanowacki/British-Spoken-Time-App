@@ -19,9 +19,9 @@ class TimeWordUtilsTest implements WithAssertions {
     }
 
     @Test
-    void shouldReturnBlankStringForHour12AndItsMultiples() {
-        assertThat(TimeWordUtils.getWordForHour(12)).isBlank();
-        assertThat(TimeWordUtils.getWordForHour(24)).isBlank();
+    void shouldReturnTwelveForHour12AndItsMultiples() {
+        assertThat(TimeWordUtils.getWordForHour(12)).isEqualTo("twelve");
+        assertThat(TimeWordUtils.getWordForHour(24)).isEqualTo("twelve");
     }
 
     @Test
