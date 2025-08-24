@@ -32,6 +32,9 @@ public class TimeWordUtils {
 
     public static String getWordForHour(int hour) {
         int adjustedHour = hour % 12;
+        if (adjustedHour == 0) {
+            adjustedHour = 12;
+        }
 
         return NUMBER_TO_WORD.getOrDefault(adjustedHour, "");
     }

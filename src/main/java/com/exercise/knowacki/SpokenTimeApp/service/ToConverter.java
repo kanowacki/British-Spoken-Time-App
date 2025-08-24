@@ -10,7 +10,7 @@ public class ToConverter implements TimeConverter {
     @Override
     public String convert(int hour, int minute) {
         int minutesToNextHour = 60 - minute;
-        int nextHour = (hour + 1) % 24;
+        int nextHour = (hour + 1) % 12;
 
         return String.format("%s to %s", getWordForMinute(minutesToNextHour), getWordForHour(nextHour));
     }

@@ -21,7 +21,7 @@ public class SpokenTimeService {
             LocalTime time = LocalTime.parse(timeInput, INPUT_FORMATTER);
             return convertTimeToWords(time);
         } catch (Exception e) {
-            throw new IllegalArgumentException("Invalid time format. Please use HH:mm (e.g., 14:30)");
+            throw new IllegalArgumentException("Invalid time format. Please use HH:mm (e.g., 14:30, 06:02)");
         }
     }
 

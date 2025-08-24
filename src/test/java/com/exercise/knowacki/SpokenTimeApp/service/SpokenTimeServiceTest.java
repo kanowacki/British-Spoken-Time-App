@@ -1,39 +1,42 @@
 package com.exercise.knowacki.SpokenTimeApp.service;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@ExtendWith(MockitoExtension.class)
-class SpokenTimeServiceTest {
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ExtendWith(SpringExtension.class)
+class SpokenTimeServiceTest implements WithAssertions {
 
+    @Autowired
     private SpokenTimeService service;
-
-    @BeforeEach
-    void setUp() {
-        service = new SpokenTimeService();
-    }
+    @MockitoSpyBean
+    private PastConverter pastConverter;
+    @MockitoSpyBean
+    private ToConverter toConverter;
 
     @Test
     void shouldReturnMidnightFor00_00() {
         String result = service.convertToSpokenForm("00:00");
-        assertEquals("midnight", result);
+        assertThat(result).isEqualTo("midnight");
     }
 
     @Test
     void shouldReturnNoonFor12_00() {
         String result = service.convertToSpokenForm("12:00");
-        assertEquals("noon", result);
+        assertThat(result).isEqualTo("noon");
     }
 
     @Test
     void shouldReturnHourWithOClockForValidHourWithoutMinutes() {
         String result = service.convertToSpokenForm("14:00");
-        assertEquals("two o'clock", result);
+        assertThat(result).isEqualTo("two o'clock");
     }
 
     @Test
@@ -42,7 +45,7 @@ class SpokenTimeServiceTest {
                 IllegalArgumentException.class,
                 () -> service.convertToSpokenForm("25:00")
         );
-        assertEquals("Invalid time format. Please use HH:mm (e.g., 14:30)", exception.getMessage());
+        assertThat(exception.getMessage()).isEqualTo("Invalid time format. Please use HH:mm (e.g., 14:30, 06:02)");
     }
 
     @Test
@@ -51,6 +54,21 @@ class SpokenTimeServiceTest {
                 IllegalArgumentException.class,
                 () -> service.convertToSpokenForm("invalid")
         );
-        assertEquals("Invalid time format. Please use HH:mm (e.g., 14:30)", exception.getMessage());
+        assertThat(exception.getMessage()).isEqualTo("Invalid time format. Please use HH:mm (e.g., 14:30, 06:02)");
     }
+
+    @Test
+    void shouldUsePastConverterForMinutesUpTo34() {
+
+        assertThat(service.convertToSpokenForm("02:05")).isEqualTo("five past two");
+        assertThat(service.convertToSpokenForm("04:15")).isEqualTo("quarter past four");
+    }
+
+    @Test
+    void shouldUseToConverterForMinutesGreaterThan34() {
+
+        assertThat(service.convertToSpokenForm("07:35")).isEqualTo("twenty five to eight");
+        assertThat(service.convertToSpokenForm("11:55")).isEqualTo("five to twelve");
+    }
+
 }
