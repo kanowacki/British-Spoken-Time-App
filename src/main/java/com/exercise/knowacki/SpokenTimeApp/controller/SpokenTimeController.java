@@ -15,7 +15,7 @@ public class SpokenTimeController {
 
     private final SpokenTimeService service;
 
-    @GetMapping("/GB/{time}")
+    @GetMapping("/{time}")
     public String getSpokenTime(@PathVariable String time) {
         return service.convertToSpokenForm(time);
     }

@@ -39,7 +39,7 @@ public class SpokenTimeService {
             }
         } else if (minute == 30) {
             return "half past " + TimeWordUtils.getWordForHour(hour);
-        } else if (minute <= 34) {
+        } else if (minute < 30) {
             return pastConverter.convert(hour, minute);
         } else {
             return toConverter.convert(hour, minute);

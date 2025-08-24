@@ -31,7 +31,7 @@ class SpokenTimeControllerTest {
     @SneakyThrows
     void shouldReturnSpokenTimeForValidInput(String testInput, String expectedOutput) {
 
-        mockMvc.perform(get("/spoken-time/GB/{time}", testInput))
+        mockMvc.perform(get("/spoken-time/{time}", testInput))
                 .andExpect(status().isOk())
                 .andExpect(content().string(expectedOutput));
     }
@@ -43,7 +43,7 @@ class SpokenTimeControllerTest {
         String timeInput = "25:00";
 
         // When & Then
-        mockMvc.perform(get("/spoken-time/GB/{time}", timeInput))
+        mockMvc.perform(get("/spoken-time/{time}", timeInput))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.statusCode").value(400))
                 .andExpect(jsonPath("$.requestedHour").value("25:00"))
@@ -58,7 +58,7 @@ class SpokenTimeControllerTest {
         String timeInput = "invalid";
 
         // When & Then
-        mockMvc.perform(get("/spoken-time/GB/{time}", timeInput))
+        mockMvc.perform(get("/spoken-time/{time}", timeInput))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.statusCode").value(400))
                 .andExpect(jsonPath("$.requestedHour").value("invalid"))
