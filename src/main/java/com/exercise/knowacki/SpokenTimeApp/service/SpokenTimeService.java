@@ -1,18 +1,19 @@
 package com.exercise.knowacki.SpokenTimeApp.service;
 
-import com.exercise.knowacki.SpokenTimeApp.util.TimeWordUtils;
+import com.exercise.knowacki.SpokenTimeApp.service.converters.TimeConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class SpokenTimeService {
 
-    private final PastConverter pastConverter;
-    private final ToConverter toConverter;
+    private final List<TimeConverter> converters;
 
     private static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
@@ -20,7 +21,7 @@ public class SpokenTimeService {
         try {
             LocalTime time = LocalTime.parse(timeInput, INPUT_FORMATTER);
             return convertTimeToWords(time);
-        } catch (Exception e) {
+        } catch (DateTimeParseException e) {
             throw new IllegalArgumentException("Invalid time format. Please use HH:mm (e.g., 14:30, 06:02)");
         }
     }
@@ -29,21 +30,11 @@ public class SpokenTimeService {
         int hour = time.getHour();
         int minute = time.getMinute();
 
-        if (minute == 0) {
-            if (hour == 0) {
-                return "midnight";
-            } else if (hour == 12) {
-                return "noon";
-            } else {
-                return TimeWordUtils.getWordForHour(hour) + " o'clock";
-            }
-        } else if (minute == 30) {
-            return "half past " + TimeWordUtils.getWordForHour(hour);
-        } else if (minute < 30) {
-            return pastConverter.convert(hour, minute);
-        } else {
-            return toConverter.convert(hour, minute);
-        }
+        return converters.stream()
+                .filter(converter -> converter.canHandle(hour, minute))
+                .findFirst()
+                .map(converter -> converter.convert(hour, minute))
+                .orElseThrow(() -> new IllegalStateException("No converter found for requested time."));
     }
 
 

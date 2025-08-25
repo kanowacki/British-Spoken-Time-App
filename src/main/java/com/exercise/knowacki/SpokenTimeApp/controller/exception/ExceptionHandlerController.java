@@ -20,6 +20,14 @@ public class ExceptionHandlerController {
         return new Error(HttpStatus.BAD_REQUEST.value(), extractHourFromRequest(request), e.getClass().getSimpleName(), e.getMessage());
     }
 
+    @ExceptionHandler(IllegalStateException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Error handleIllegalStateException(Exception e, WebRequest request) {
+
+        return new Error(HttpStatus.INTERNAL_SERVER_ERROR.value(), extractHourFromRequest(request), e.getClass().getSimpleName(), e.getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

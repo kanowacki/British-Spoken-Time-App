@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -16,10 +15,6 @@ class SpokenTimeServiceTest implements WithAssertions {
 
     @Autowired
     private SpokenTimeService service;
-    @MockitoSpyBean
-    private PastConverter pastConverter;
-    @MockitoSpyBean
-    private ToConverter toConverter;
 
     @Test
     void shouldReturnMidnightFor00_00() {
@@ -31,6 +26,12 @@ class SpokenTimeServiceTest implements WithAssertions {
     void shouldReturnNoonFor12_00() {
         String result = service.convertToSpokenForm("12:00");
         assertThat(result).isEqualTo("noon");
+    }
+
+    @Test
+    void shouldReturnHalfPasWhenMinutesEquals30() {
+        String result = service.convertToSpokenForm("12:30");
+        assertThat(result).isEqualTo("half past twelve");
     }
 
     @Test
