@@ -1,6 +1,6 @@
 package com.exercise.knowacki.SpokenTimeApp.controller.exception;
 
-import com.exercise.knowacki.SpokenTimeApp.model.ErrorDto;
+import com.exercise.knowacki.SpokenTimeApp.model.Error;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,27 +15,17 @@ public class ExceptionHandlerController {
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorDto handleIllegalArgumentException(IllegalArgumentException e, WebRequest request) {
+    public Error handleIllegalArgumentException(IllegalArgumentException e, WebRequest request) {
 
-        return buildErrorDto(HttpStatus.BAD_REQUEST, e, request);
+        return new Error(HttpStatus.BAD_REQUEST.value(), extractHourFromRequest(request), e.getClass().getSimpleName(), e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseBody
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorDto handleOtherExceptions(Exception e, WebRequest request) {
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Error handleOtherExceptions(Exception e, WebRequest request) {
 
-        return buildErrorDto(HttpStatus.BAD_REQUEST, e, request);
-    }
-
-    private ErrorDto buildErrorDto(HttpStatus status, Exception e, WebRequest request) {
-
-        return ErrorDto.builder()
-                .statusCode(status.value())
-                .requestedHour(extractHourFromRequest(request))
-                .error(e.getClass().getSimpleName())
-                .errorMessage(e.getMessage())
-                .build();
+        return new Error(HttpStatus.INTERNAL_SERVER_ERROR.value(), extractHourFromRequest(request), e.getClass().getSimpleName(), e.getMessage());
     }
 
     private String extractHourFromRequest(WebRequest request) {
