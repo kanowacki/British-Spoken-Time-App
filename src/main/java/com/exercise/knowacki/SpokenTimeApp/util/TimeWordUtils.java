@@ -6,6 +6,12 @@ import java.util.Map;
 
 @UtilityClass
 public class TimeWordUtils {
+    public static final String NOON = "noon";
+    public static final String MIDNIGHT = "midnight";
+    public static final String HALF = "half past ";
+    public static final String O_CLOCK = " o'clock";
+    public static final String PAST = " past ";
+    public static final String TO = " to ";
     private static final Map<Integer, String> NUMBER_TO_WORD = Map.ofEntries(
             Map.entry(1, "one"),
             Map.entry(2, "two"),
@@ -32,6 +38,9 @@ public class TimeWordUtils {
 
     public static String getWordForHour(int hour) {
         int adjustedHour = hour % 12;
+
+        if(hour == 0) return MIDNIGHT;
+
         if (adjustedHour == 0) {
             adjustedHour = 12;
         }

@@ -16,6 +16,12 @@ class TimeWordUtilsTest implements WithAssertions {
     void shouldWrapHourAbove12() {
         assertThat(TimeWordUtils.getWordForHour(13)).isEqualTo("one");
         assertThat(TimeWordUtils.getWordForHour(17)).isEqualTo("five");
+        assertThat(TimeWordUtils.getWordForHour(23)).isEqualTo("eleven");
+    }
+
+    @Test
+    void shouldReturnMidnightForHour0() {
+        assertThat(TimeWordUtils.getWordForHour(0)).isEqualTo("midnight");
     }
 
     @Test
