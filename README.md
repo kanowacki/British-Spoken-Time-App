@@ -2,6 +2,9 @@
 This program in Java outputs the British spoken form of a time given as input.
 
 # Project assumptions:
+### Input
+* Requested time is passed as a path parameter in "HH:mm" format.
+### Output
 * The 'number of minutes' is stated first, followed by the 'number of hours' (i.e. ten past seven), unless the hour is sharp (on the dot - i.e. five o'clock), in which case the minutes are omitted.
 * If the number of minutes is more than 30 (closer to the next hour), the app returns the number of minutes remaining 'to' the next hour (i.e. ten to nine).
 * The word 'quarter' is used for 15 minutes, and 'half' for 30 minutes.
@@ -10,21 +13,36 @@ This program in Java outputs the British spoken form of a time given as input.
 ### Prerequisites
 - **Java 21**
 - **Maven 3.8+**
-- Internet connection (to download dependencies)
+- **Docker**: For containerization and to run the application.
 
 ### Build and Run
 
 1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/kanowacki/British-Spoken-Time-App.git
    ```
-   git clone <repo-url>
+   ```bash
    cd SpokenTimeApp
-
-2. **Build the project**:
    ```
+2. **Build with docker-compose.yaml**:
+   ```bash
+   mvn clean package
+   ```
+   ```bash
+   docker-compose build
+   ```
+   ```bash
+   docker-compose up -d
+   ```
+   To stop and remove the container run: 
+   ```bash
+   docker-compose down
+   ```
+ 3.   **Alternatively build the project and run the application using below commands**:
+   ```bash
    mvn clean install
-   ```
-3. **Run the application**:
-   ```
+```
+   ```bash
    mvn spring-boot:run
    ```
 ### Access endpoints
@@ -33,7 +51,7 @@ This program in Java outputs the British spoken form of a time given as input.
 
 1. **Example**:
 
-   GET /spoken-time/04:16
+   GET http://localhost:8080/spoken-time/04:16
 
    **Response**:
    ```
@@ -43,7 +61,7 @@ This program in Java outputs the British spoken form of a time given as input.
    ```
 2. **Error Example**:
 
-   GET /spoken-time/99:99
+   GET http://localhost:8080/spoken-time/99:99
 
    **Response**:
    ```
