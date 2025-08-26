@@ -5,9 +5,10 @@ This program in Java outputs the British spoken form of a time given as input.
 ### Input
 * Requested time is passed as a path parameter in "HH:mm" format.
 ### Output
-* The 'number of minutes' is stated first, followed by the 'number of hours' (i.e. ten past seven), unless the hour is sharp (on the dot - i.e. five o'clock), in which case the minutes are omitted.
-* If the number of minutes is more than 30 (closer to the next hour), the app returns the number of minutes remaining 'to' the next hour (i.e. ten to nine).
-* The word 'quarter' is used for 15 minutes, and 'half' for 30 minutes.
+* The 'number of minutes' is stated first, followed by the 'number of hours', unless the hour is sharp (i.e. five o'clock -in which case the minutes are omitted), or minutes are in the range of 31-34 (i.e. ten thirty three- hour is returned first, followed by the value of minutes).
+* If the number of minutes is less than 30, the app returns the number of minutes 'past' the hour (e.g., twenty past seven).
+* If the number of minutes is more than 34 (closer to the next hour), the app returns the number of minutes remaining 'to' the next hour (i.e. ten to nine).
+* The word 'quarter' is used for 15 minutes, 'half' for 30 minutes.
 
 # How to run it:
 ### Prerequisites

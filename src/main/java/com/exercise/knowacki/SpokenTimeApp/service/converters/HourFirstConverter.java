@@ -4,18 +4,15 @@ import com.exercise.knowacki.SpokenTimeApp.util.TimeWordUtils;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ToConverter implements TimeConverter {
+public class HourFirstConverter implements TimeConverter {
 
     @Override
     public boolean canHandle(int hour, int minute) {
-        return minute >= 35;
+        return minute > 30 && minute < 35;
     }
 
     @Override
     public String convert(int hour, int minute) {
-        int minutesToNextHour = 60 - minute;
-        int nextHour = (hour + 1) % 24;
-
-        return TimeWordUtils.getWordForMinute(minutesToNextHour) + TimeWordUtils.TO + TimeWordUtils.getWordForHour(nextHour);
+        return TimeWordUtils.getWordForHour(hour) + " " + TimeWordUtils.getWordForMinute(minute);
     }
 }

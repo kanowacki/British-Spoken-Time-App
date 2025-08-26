@@ -59,10 +59,17 @@ class SpokenTimeServiceTest implements WithAssertions {
     }
 
     @Test
-    void shouldUsePastConverterForMinutesUpTo34() {
+    void shouldUsePastConverterForMinutesUpTo30() {
 
         assertThat(service.convertToSpokenForm("02:05")).isEqualTo("five past two");
         assertThat(service.convertToSpokenForm("04:15")).isEqualTo("quarter past four");
+    }
+
+    @Test
+    void shouldUseHourFirstConverterForMinutesBetween31And34() {
+
+        assertThat(service.convertToSpokenForm("02:34")).isEqualTo("two thirty four");
+        assertThat(service.convertToSpokenForm("11:31")).isEqualTo("eleven thirty one");
     }
 
     @Test
